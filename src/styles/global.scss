@@ -1,0 +1,10 @@
+@import './fonts.scss';
+@import './variables.scss';
+
+body {
+  font-family: $font-primary; /* 기본 폰트 */
+  font-weight: 400; /* Regular */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

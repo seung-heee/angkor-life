@@ -1,0 +1,28 @@
+@import './variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* 폰트 웨이트 클래스 */
+.poppins-thin {
+  font-family: $font-primary;
+  font-weight: 100;
+}
+
+.poppins-light {
+  font-family: $font-primary;
+  font-weight: 300;
+}
+
+.poppins-regular {
+  font-family: $font-primary;
+  font-weight: 400;
+}
+
+.poppins-medium {
+  font-family: $font-primary;
+  font-weight: 500;
+}
+
+.poppins-bold {
+  font-family: $font-primary;
+  font-weight: 700;
+}
