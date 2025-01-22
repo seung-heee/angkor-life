@@ -1,0 +1,48 @@
+.profile {
+  background-color: rgba(18, 18, 18, 1);
+  .swiperImg {
+    text-align: center;
+    padding-top: 30px;
+    width: 80%;
+    img {
+      width: 100%;
+    }
+  }
+  .default {
+    padding: 20px;
+    .name {
+      font-size: 22px;
+      line-height: 30px;
+    }
+    .candidateNumber {
+      color: #6f76ff;
+      font-size: 14px;
+      line-height: 28px;
+    }
+  }
+
+  .Detail {
+    border-radius: 6px;
+    padding: 5px 20px;
+    margin: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    .detailItems {
+      display: flex;
+      flex-direction: column;
+      padding: 15px 0;
+
+      border-bottom: 1px solid #252525;
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .title {
+        font-size: 14px;
+        color: #7c7c7c;
+      }
+      .content {
+        margin-top: 8px;
+      }
+    }
+  }
+}

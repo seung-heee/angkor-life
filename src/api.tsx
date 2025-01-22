@@ -16,3 +16,16 @@ export async function candidateList() {
 
   return await api.get('/vote/candidate/list', { params }).then((res) => res.data);
 }
+
+// 후보자 상세정보 조회
+export async function candidateInfo(id: number) {
+  if (id === undefined || id === null) {
+    throw new Error('Invalid candidate ID');
+  }
+
+  const params = {
+    userId: 'userA',
+  };
+
+  return await api.get(`/vote/candidate/${id}`, { params }).then((res) => res.data);
+}

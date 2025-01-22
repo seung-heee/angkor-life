@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './Candidate.module.scss';
+import MainButton from '../MainButton/MainButton';
 
 interface CandidateProps {
   candidate: {
@@ -28,6 +29,7 @@ const Candidate = ({ candidate }: CandidateProps) => {
         <span className={styles.voted}>{candidate.voteCnt} votes</span>
         <button className={styles.votedButton}>Vote</button>
       </div>
+      {/* <MainButton text="Vote" onClick={() => console.log('temp')} voted={false} /> */}
     </div>
   );
 };

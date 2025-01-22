@@ -17,7 +17,7 @@ const Login = () => {
       <img src="/assets/images/mainTop.svg" alt="Main Top" />
       <div className={styles.loginBottom}>
         <Input />
-        <MainButton text="Log in" onClick={handleLoginClick} />
+        <MainButton voted={false} text="Log in" onClick={handleLoginClick} />
       </div>
     </div>
   );
