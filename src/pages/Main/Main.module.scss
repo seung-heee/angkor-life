@@ -1,13 +1,29 @@
+// mainTitle
 .mainTitle {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+// votingInfo
 .votingInfo {
+  padding: 20px;
+  background: linear-gradient(to bottom, #060203, #1c1c1c);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   min-height: 100vh;
+
+  .info {
+    line-height: 22px;
+    font-size: 14px;
+    color: #aeaeb2;
+    margin-bottom: 45px;
+  }
 }
 
+// listUp
 .listUp {
   min-height: 100vh;
 
@@ -15,4 +31,16 @@
     display: grid;
     grid-template-columns: 2fr;
   }
+}
+
+.subHeader {
+  font-size: 14px;
+  line-height: 26px;
+  color: #6f76ff;
+}
+
+.Header {
+  margin: 20px 0 45px 0;
+  font-size: 28px;
+  font-weight: bold;
 }

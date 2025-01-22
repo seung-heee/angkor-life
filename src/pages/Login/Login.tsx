@@ -11,7 +11,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className={styles.loginContainer}>
       <img className="mainBottom" src="/assets/images/mainBottom.svg" alt="Main Bottom" />
 
       <img src="/assets/images/mainTop.svg" alt="Main Top" />

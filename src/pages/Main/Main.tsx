@@ -1,5 +1,6 @@
 import Candidate from '../../components/Candidate/Candidate';
 import Timer from '../../components/Timer/Timer';
+import VotingTable from '../../components/VotingTable/VotingTable';
 import styles from './Main.module.scss';
 
 const Main = () => {
@@ -15,16 +16,19 @@ const Main = () => {
       {/* votingInfo */}
       <section className={styles.votingInfo}>
         <header>
-          <p>WORLD MISS UNIVERSITY</p>
-          <p>Mobile Voting Information</p>
+          <p className={styles.subHeader}>WORLD MISS UNIVERSITY</p>
+          <p className={styles.Header}>
+            Mobile Voting
+            <br /> Information
+          </p>
         </header>
-        <div>2024 World Miss University brings together future global leaders who embody both beauty and intellect.</div>
-
+        <div className={styles.info}>
+          2024 World Miss University brings <br />
+          together future global leaders who embody both
+          <br /> beauty and intellect.
+        </div>
         {/* 컴포넌트화 */}
-        <article>
-          <div></div>
-          <div></div>
-        </article>
+        <VotingTable />
       </section>
 
       {/* listUp */}
