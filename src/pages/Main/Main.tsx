@@ -1,9 +1,25 @@
+import { useQuery } from '@tanstack/react-query';
 import Candidate from '../../components/Candidate/Candidate';
 import Timer from '../../components/Timer/Timer';
 import VotingTable from '../../components/VotingTable/VotingTable';
 import styles from './Main.module.scss';
+import { candidateList } from '../../api';
+
+interface CandidateData {
+  candidateNumber: number;
+  id: number;
+  name: string;
+  profileUrl: string;
+  voteCnt: number;
+}
 
 const Main = () => {
+  // useQuery를 통해 API 데이터 가져오기
+  const { data, isLoading, error } = useQuery<{ content: CandidateData[] }>({
+    queryKey: ['candidateList'],
+    queryFn: candidateList,
+  });
+
   return (
     <div>
       {/* mainTitle */}
@@ -41,12 +57,10 @@ const Main = () => {
           <div className={styles.info}>※ You can vote for up to 3 candidates</div>
         </header>
 
-        {/* 후보자 리스트업 그리드 내부 컴포넌트화 */}
         <div className={styles.candidateBox}>
-          <Candidate />
-          <Candidate />
-          <Candidate />
-          <Candidate />
+          {data?.content.map((candidate: CandidateData) => (
+            <Candidate key={candidate.id} candidate={candidate} />
+          ))}
         </div>
       </section>
     </div>

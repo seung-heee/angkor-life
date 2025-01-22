@@ -1,8 +1,6 @@
 import React from 'react';
 
 const Profile = () => {
-  // vote/cantidate/{id}
-
   return (
     <div>
       <img src="" alt="" />

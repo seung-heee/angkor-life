@@ -1,15 +1,31 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './Candidate.module.scss';
-import React from 'react';
 
-const Candidate = () => {
+interface CandidateProps {
+  candidate: {
+    candidateNumber: number;
+    id: number;
+    name: string;
+    profileUrl: string;
+    voteCnt: number;
+  };
+}
+
+const Candidate = ({ candidate }: CandidateProps) => {
+  const navigate = useNavigate();
+
+  const handleProfile = () => {
+    navigate(`/profile/${candidate.id}`);
+  };
+
   return (
     <div className={styles.candidate}>
-      <button className={styles.candidateImage}>
-        <img src="/assets/images/testImg.png" alt="candidate Image" />
+      <button onClick={handleProfile} className={styles.candidateImage}>
+        <img src={candidate.profileUrl} alt={`${candidate.name}`} />
       </button>
       <div className={styles.candidateInfo}>
-        <span className={styles.name}>name</span>
-        <span className={styles.voted}>voted</span>
+        <span className={styles.name}>{candidate.name}</span>
+        <span className={styles.voted}>{candidate.voteCnt} votes</span>
         <button className={styles.votedButton}>Vote</button>
       </div>
     </div>
