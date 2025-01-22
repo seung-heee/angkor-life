@@ -10,7 +10,7 @@ type MainButtonProps = {
 const MainButton = ({ text, onClick, voted }: MainButtonProps) => {
   return (
     <div className={styles.mainBtnBox}>
-      <button onClick={onClick} className={styles.mainBtn}>
+      <button onClick={onClick} disabled={voted} className={voted ? styles.voted : styles.mainBtn}>
         {text}
       </button>
     </div>

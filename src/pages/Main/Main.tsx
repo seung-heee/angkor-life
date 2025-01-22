@@ -3,7 +3,7 @@ import Candidate from '../../components/Candidate/Candidate';
 import Timer from '../../components/Timer/Timer';
 import VotingTable from '../../components/VotingTable/VotingTable';
 import styles from './Main.module.scss';
-import { candidateList } from '../../api';
+import { candidateList, candidateVotedList } from '../../api';
 
 interface CandidateData {
   candidateNumber: number;
@@ -14,11 +14,37 @@ interface CandidateData {
 }
 
 const Main = () => {
-  // useQuery를 통해 API 데이터 가져오기
-  const { data, isLoading, error } = useQuery<{ content: CandidateData[] }>({
+  const userId = localStorage.getItem('loginId') || ''; // 로컬 스토리지에서 userId 가져오기
+
+  // 전체 후보자 리스트 가져오기
+  const {
+    data: candidatesData,
+    isLoading: isCandidatesLoading,
+    error: candidatesError,
+  } = useQuery<{
+    content: CandidateData[];
+  }>({
     queryKey: ['candidateList'],
     queryFn: candidateList,
   });
+
+  // 투표한 후보자 ID 리스트 가져오기
+  const {
+    data: votedCandidatesData,
+    isLoading: isVotedCandidatesLoading,
+    error: votedCandidatesError,
+  } = useQuery<number[]>({
+    queryKey: ['candidateVotedList', userId],
+    queryFn: () => candidateVotedList(userId),
+    enabled: !!userId, // userId가 있을 때만 실행
+  });
+
+  if (isCandidatesLoading || isVotedCandidatesLoading) return <div>Loading...</div>;
+  if (candidatesError) return <div>Error: {candidatesError.message}</div>;
+  if (votedCandidatesError) return <div>Error: {votedCandidatesError.message}</div>;
+
+  console.log('All Candidates:', candidatesData);
+  console.log('Voted Candidate IDs:', votedCandidatesData);
 
   return (
     <div>
@@ -50,14 +76,18 @@ const Main = () => {
           <div className={styles.subHeader}></div>
           <div className={styles.header}>
             2024
-            <br /> Cadidate List
+            <br /> Candidate List
           </div>
           <div className={styles.info}>※ You can vote for up to 3 candidates</div>
         </header>
 
         <div className={styles.candidateBox}>
-          {data?.content.map((candidate: CandidateData) => (
-            <Candidate key={candidate.id} candidate={candidate} />
+          {candidatesData?.content.map((candidate: CandidateData) => (
+            <Candidate
+              key={candidate.id}
+              candidate={candidate}
+              voted={votedCandidatesData?.includes(candidate.id)} // 투표 여부 전달
+            />
           ))}
         </div>
       </section>

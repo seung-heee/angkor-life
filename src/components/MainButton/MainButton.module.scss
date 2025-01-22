@@ -8,8 +8,21 @@
 }
 
 .mainBtn {
+  cursor: pointer;
+  position: relative;
   background-color: $primary-color;
   color: $text-color;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  width: 90%;
+  padding: 0.8rem;
+  border-radius: 999px;
+}
+
+.voted {
+  color: $primary-color;
+  background-color: $text-color;
   font-size: 16px;
   font-weight: bold;
   border: none;

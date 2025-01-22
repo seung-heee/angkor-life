@@ -10,9 +10,10 @@ interface CandidateProps {
     profileUrl: string;
     voteCnt: number;
   };
+  voted?: boolean;
 }
 
-const Candidate = ({ candidate }: CandidateProps) => {
+const Candidate = ({ candidate, voted }: CandidateProps) => {
   const navigate = useNavigate();
 
   const handleProfile = () => {
@@ -29,7 +30,7 @@ const Candidate = ({ candidate }: CandidateProps) => {
         <span className={styles.voted}>{candidate.voteCnt} votes</span>
         <button className={styles.votedButton}>Vote</button>
       </div>
-      {/* <MainButton text="Vote" onClick={() => console.log('temp')} voted={false} /> */}
+      <MainButton text="Vote" onClick={() => console.log('temp')} voted={voted ?? false} />
     </div>
   );
 };

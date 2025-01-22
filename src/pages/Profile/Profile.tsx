@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { candidateInfo } from '../../api';
+import { candidateInfo, vote } from '../../api';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -13,24 +13,48 @@ import styles from './Profile.module.scss';
 import MainButton from '../../components/MainButton/MainButton';
 
 const Profile = () => {
-  const handleVoteClick = () => {
-    console.log('ddd');
-  };
+  const userId = localStorage.getItem('loginId') || '';
   const params = useParams();
   const id = params.id ? Number(params.id) : undefined; // 숫자로 변환
 
+  // useMutation 설정
+  const mutation = useMutation({
+    mutationFn: (variables: { id: number; userId: string }) => vote(variables.id, variables.userId),
+    onSuccess: () => {
+      console.log('Vote successful!');
+      alert('Your vote has been submitted!');
+    },
+    onError: (error: any) => {
+      console.error('Vote failed:', error);
+      alert('Failed to submit your vote. Please try again.');
+    },
+  });
+
+  // 버튼 클릭 핸들러
+  const handleVoteClick = () => {
+    if (id === undefined) {
+      alert('Candidate ID is required.');
+      return;
+    }
+
+    console.log('Voting for candidate:', id);
+    mutation.mutate({ id, userId }); // mutation 실행
+  };
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['candidateInfo', id],
-    queryFn: () => candidateInfo(id as number), // `id`가 undefined가 아님을 보장
-    enabled: !!id,
+    queryFn: () => candidateInfo(id as number, userId), // `userId`를 추가로 전달
+    enabled: !!id && !!userId, // `id`와 `userId`가 유효한 경우만 실행
   });
+
+  console.log(data);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   if (id === undefined || isNaN(id)) {
     return <div>Invalid Candidate ID</div>; // 조건부 리턴 전에 useQuery 호출
   }
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   return (
     <div className={styles.profile}>
@@ -86,7 +110,7 @@ const Profile = () => {
       </div>
 
       <div className="copyRight">COPYRIGHT © WUPSC ALL RIGHT RESERVED.</div>
-      <MainButton text="Vote" onClick={handleVoteClick} voted={false} />
+      <MainButton text="Vote" onClick={handleVoteClick} voted={data.voted} />
     </div>
   );
 };
