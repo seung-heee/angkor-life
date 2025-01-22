@@ -16,28 +16,35 @@ const Main = () => {
       {/* votingInfo */}
       <section className={styles.votingInfo}>
         <header>
-          <p className={styles.subHeader}>WORLD MISS UNIVERSITY</p>
-          <p className={styles.Header}>
+          <div className={styles.subHeader}>WORLD MISS UNIVERSITY</div>
+          <div className={styles.header}>
             Mobile Voting
             <br /> Information
-          </p>
+          </div>
+          <div className={styles.info}>
+            2024 World Miss University brings <br />
+            together future global leaders who embody both
+            <br /> beauty and intellect.
+          </div>
         </header>
-        <div className={styles.info}>
-          2024 World Miss University brings <br />
-          together future global leaders who embody both
-          <br /> beauty and intellect.
-        </div>
-        {/* 컴포넌트화 */}
         <VotingTable />
       </section>
 
       {/* listUp */}
       <section className={styles.listUp}>
-        <header>2024 Cadidate List</header>
-        <div>※ You can vote for up to 3 candidates</div>
+        <header>
+          <div className={styles.subHeader}></div>
+          <div className={styles.header}>
+            2024
+            <br /> Cadidate List
+          </div>
+          <div className={styles.info}>※ You can vote for up to 3 candidates</div>
+        </header>
 
         {/* 후보자 리스트업 그리드 내부 컴포넌트화 */}
         <div className={styles.candidateBox}>
+          <Candidate />
+          <Candidate />
           <Candidate />
           <Candidate />
         </div>

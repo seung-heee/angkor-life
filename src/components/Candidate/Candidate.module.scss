@@ -1,4 +1,39 @@
-.candidateInfo {
-  display: flex;
-  flex-direction: column;
+.candidate {
+  .candidateImage {
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: inherit;
+    border: none;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .candidateInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .name {
+      font-size: 16px;
+    }
+
+    .voted {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #6f76ff;
+    }
+
+    .votedButton {
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      width: 100%;
+      background-color: #4232d5;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 999px;
+    }
+  }
 }
