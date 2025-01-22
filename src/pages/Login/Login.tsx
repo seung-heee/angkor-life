@@ -1,10 +1,13 @@
 import styles from './Login.module.scss';
 import Input from '../../components/Input/Input';
 import MainButton from '../../components/MainButton/MainButton';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const handleLoginClick = () => {
-    alert('Log in clicked!');
+    navigate('/main');
   };
 
   return (
