@@ -11,6 +11,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import styles from './Profile.module.scss';
 import MainButton from '../../components/MainButton/MainButton';
+import SwiperImage from '../../components/SwiperImage/SwiperImage';
 
 const Profile = () => {
   const userId = localStorage.getItem('loginId') || '';
@@ -62,20 +63,7 @@ const Profile = () => {
 
   return (
     <div className={styles.profile}>
-      {/* TODO SwiperImage 컴포넌트화 시키기 */}
-      <Swiper
-        pagination={{
-          clickable: true,
-        }}
-        modules={[Pagination]}
-        className={styles.swiperImg}
-      >
-        {data.profileInfoList.map((profile: any, index: number) => (
-          <SwiperSlide key={index}>
-            <img src={profile.profileUrl} alt={data.name} className={styles.img} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <SwiperImage profileInfoList={data.profileInfoList} name={data.name} />
 
       <div>
         {/* 후보자 기본 정보 */}
@@ -112,7 +100,6 @@ const Profile = () => {
           </div>
         </article>
       </div>
-
       <div className="copyRight">COPYRIGHT © WUPSC ALL RIGHT RESERVED.</div>
       <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={false} />
     </div>
