@@ -36,7 +36,7 @@ const Login = () => {
           {/* 에러 메시지 표시 */}
           {error && <div className={styles.errorMessage}>{error}</div>}
         </div>
-        <MainButton voted={false} text="Log in" onClick={handleLoginClick} />
+        <MainButton voted={false} text="Log in" onClick={handleLoginClick} main={false} />
       </div>
     </div>
   );

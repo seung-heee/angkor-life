@@ -1,32 +1,31 @@
 @import '/src/styles/variables.scss';
 
 .mainBtnBox {
-  // display: flex;
-  // justify-content: center;
   text-align: center;
   padding-bottom: 20px;
 }
 
 .mainBtn {
-  cursor: pointer;
   position: relative;
-  background-color: $primary-color;
-  color: $text-color;
   font-size: 16px;
   font-weight: bold;
   border: none;
   width: 90%;
-  padding: 0.8rem;
+  padding: 1rem;
   border-radius: 999px;
 }
 
 .voted {
   color: $primary-color;
   background-color: $text-color;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  width: 90%;
-  padding: 0.8rem;
-  border-radius: 999px;
+}
+
+.notVoted {
+  cursor: pointer;
+  background-color: $primary-color;
+  color: $text-color;
+}
+
+.mainPadding {
+  padding: 0.4rem;
 }

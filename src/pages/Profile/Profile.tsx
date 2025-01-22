@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { candidateInfo, vote } from '../../api';
 
@@ -16,13 +16,13 @@ const Profile = () => {
   const userId = localStorage.getItem('loginId') || '';
   const params = useParams();
   const id = params.id ? Number(params.id) : undefined; // 숫자로 변환
+  const [localVoted, setLocalVoted] = useState<boolean>(false);
 
   // useMutation 설정
   const mutation = useMutation({
     mutationFn: (variables: { id: number; userId: string }) => vote(variables.id, variables.userId),
     onSuccess: () => {
-      console.log('Vote successful!');
-      alert('Your vote has been submitted!');
+      setLocalVoted((prev) => !prev); // 상태 반전
     },
     onError: (error: any) => {
       console.error('Vote failed:', error);
@@ -37,7 +37,6 @@ const Profile = () => {
       return;
     }
 
-    console.log('Voting for candidate:', id);
     mutation.mutate({ id, userId }); // mutation 실행
   };
 
@@ -47,7 +46,12 @@ const Profile = () => {
     enabled: !!id && !!userId, // `id`와 `userId`가 유효한 경우만 실행
   });
 
-  console.log(data);
+  // data가 변경될 때 localVoted 초기화
+  useEffect(() => {
+    if (data?.voted !== undefined) {
+      setLocalVoted(data.voted);
+    }
+  }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
@@ -110,7 +114,7 @@ const Profile = () => {
       </div>
 
       <div className="copyRight">COPYRIGHT © WUPSC ALL RIGHT RESERVED.</div>
-      <MainButton text="Vote" onClick={handleVoteClick} voted={data.voted} />
+      <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={false} />
     </div>
   );
 };

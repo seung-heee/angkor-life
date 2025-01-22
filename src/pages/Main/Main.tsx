@@ -4,6 +4,8 @@ import Timer from '../../components/Timer/Timer';
 import VotingTable from '../../components/VotingTable/VotingTable';
 import styles from './Main.module.scss';
 import { candidateList, candidateVotedList } from '../../api';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface CandidateData {
   candidateNumber: number;
@@ -14,6 +16,7 @@ interface CandidateData {
 }
 
 const Main = () => {
+  const navigate = useNavigate();
   const userId = localStorage.getItem('loginId') || ''; // 로컬 스토리지에서 userId 가져오기
 
   // 전체 후보자 리스트 가져오기
@@ -39,12 +42,25 @@ const Main = () => {
     enabled: !!userId, // userId가 있을 때만 실행
   });
 
+  // votedCandidatesData 변경 감지 및 경고창 로직
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (Array.isArray(votedCandidatesData) && votedCandidatesData.length >= 3) {
+        alert('투표는 최대 3명까지만 가능합니다.');
+        navigate('/');
+      }
+    }, 500); // 0.5초 지연
+
+    return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+  }, [votedCandidatesData]);
+
   if (isCandidatesLoading || isVotedCandidatesLoading) return <div>Loading...</div>;
   if (candidatesError) return <div>Error: {candidatesError.message}</div>;
   if (votedCandidatesError) return <div>Error: {votedCandidatesError.message}</div>;
 
   console.log('All Candidates:', candidatesData);
   console.log('Voted Candidate IDs:', votedCandidatesData);
+  console.log('max', votedCandidatesData?.length);
 
   return (
     <div>
