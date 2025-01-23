@@ -1,12 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
 import Candidate from '../../components/Candidate/Candidate';
 import Timer from '../../components/Timer/Timer';
 import VotingTable from '../../components/VotingTable/VotingTable';
 import styles from './Main.module.scss';
-import { candidateList, candidateVotedList } from '../../api';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
+import { useCandidateList } from '../../hooks/useCandidateList';
+import { useVotedCandidatesList } from '../../hooks/useVotedCandidatesList';
 
 interface CandidateData {
   candidateNumber: number;
@@ -17,57 +17,30 @@ interface CandidateData {
 }
 
 const Main = () => {
+  const navigate = useNavigate();
+  const userId = localStorage.getItem('loginId') || '';
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
 
   const handleConfirmModal = () => {
     setIsModalOpen(false);
     navigate('/');
   };
 
-  const navigate = useNavigate();
-  const userId = localStorage.getItem('loginId') || ''; // 로컬 스토리지에서 userId 가져오기
+  // 후보자 리스트 조회
+  const { data: candidatesData, isLoading: isCandidatesLoading, error: candidatesError } = useCandidateList();
 
-  // 전체 후보자 리스트 가져오기
-  const {
-    data: candidatesData,
-    isLoading: isCandidatesLoading,
-    error: candidatesError,
-  } = useQuery<{
-    content: CandidateData[];
-  }>({
-    queryKey: ['candidateList'],
-    queryFn: candidateList,
-  });
+  // 투표한 후보자 리스트 조회
+  const { data: votedCandidatesData, isLoading: isVotedCandidatesLoading, error: votedCandidatesError } = useVotedCandidatesList(userId);
 
-  // 투표한 후보자 ID 리스트 가져오기
-  const {
-    data: votedCandidatesData,
-    isLoading: isVotedCandidatesLoading,
-    error: votedCandidatesError,
-  } = useQuery<number[]>({
-    queryKey: ['candidateVotedList', userId],
-    queryFn: () => candidateVotedList(userId),
-    enabled: !!userId, // userId가 있을 때만 실행
-  });
-
-  // votedCandidatesData 변경 감지 및 경고창 로직
+  // 3명 이상의 후보자에게 투표했을 경우 모달창
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (Array.isArray(votedCandidatesData) && votedCandidatesData.length >= 3) {
-        handleOpenModal();
-      }
-    }, 500); // 0.5초 지연
-
-    return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+    if (votedCandidatesData?.length >= 3) {
+      setIsModalOpen(true);
+    }
   }, [votedCandidatesData]);
 
-  if (isCandidatesLoading || isVotedCandidatesLoading) return <div>Loading...</div>;
-  if (candidatesError) return <div>Error: {candidatesError.message}</div>;
-  if (votedCandidatesError) return <div>Error: {votedCandidatesError.message}</div>;
+  if (isCandidatesLoading || isVotedCandidatesLoading) return <p>Loading...</p>;
+  if (candidatesError || votedCandidatesError) return <p>Error occurred!</p>;
 
   return (
     <div>
@@ -108,11 +81,7 @@ const Main = () => {
 
         <div className={styles.candidateBox}>
           {candidatesData?.content.map((candidate: CandidateData) => (
-            <Candidate
-              key={candidate.id}
-              candidate={candidate}
-              voted={votedCandidatesData?.includes(candidate.id)} // 투표 여부 전달
-            />
+            <Candidate key={candidate.id} candidate={candidate} voted={votedCandidatesData?.includes(candidate.id)} />
           ))}
         </div>
       </section>
