@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './Candidate.module.scss';
 import MainButton from '../MainButton/MainButton';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { vote } from '../../api';
 import { useEffect, useState } from 'react';
+import useVoteMutation from '../../hooks/useVoteMutation';
 
 interface CandidateProps {
   candidate: {
@@ -17,50 +16,28 @@ interface CandidateProps {
 }
 
 const Candidate = ({ candidate, voted }: CandidateProps) => {
-  const queryClient = useQueryClient();
   const userId = localStorage.getItem('loginId') || '';
   const navigate = useNavigate();
   const [localVoted, setLocalVoted] = useState<boolean>(false);
-  const [localVoteCnt, setLocalVoteCnt] = useState<number>(candidate.voteCnt);
+  const [localVoteCnt, setLocalVoteCnt] = useState<number>(Number(candidate.voteCnt));
 
+  // 후보자 상세페이지로 이동
   const handleProfile = () => {
     navigate(`/profile/${candidate.id}`);
   };
 
-  // 버튼 클릭 핸들러
+  // 후보자에게 투표
   const handleVoteClick = () => {
     if (candidate.id === undefined) {
       alert('Candidate ID is required.');
       return;
     }
-
-    mutation.mutate({ id: candidate.id, userId }); // mutation 실행
+    mutation.mutate({ id: candidate.id, userId });
   };
 
-  // useMutation 설정
-  const mutation = useMutation({
-    mutationFn: (variables: { id: number; userId: string }) => vote(variables.id, variables.userId),
-    onMutate: async () => {
-      // 로컬 상태 즉시 업데이트
-      setLocalVoteCnt((prev) => Number(prev) + 1);
-      setLocalVoted(true);
-    },
-    onSuccess: () => {
-      // 캐시 무효화로 서버와 동기화
-      queryClient.invalidateQueries({ queryKey: ['candidateList'] });
-      queryClient.invalidateQueries({ queryKey: ['candidateVotedList'] });
-    },
-    onError: (error) => {
-      console.error('Vote failed:', error);
-      alert('Failed to submit your vote. Please try again.');
+  const mutation = useVoteMutation({ setLocalVoteCnt, setLocalVoted });
 
-      // 상태 롤백
-      setLocalVoteCnt((prev) => prev - 1);
-      setLocalVoted(false);
-    },
-  });
-
-  // voted 변경될 때 localVoted 초기화
+  // 초기 투표 상태 업데이트
   useEffect(() => {
     if (voted !== undefined) {
       setLocalVoted(voted);

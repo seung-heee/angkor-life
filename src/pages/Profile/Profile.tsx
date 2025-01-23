@@ -1,10 +1,11 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { candidateInfo, vote } from '../../api';
+import { candidateInfo } from '../../api';
 import styles from './Profile.module.scss';
 import MainButton from '../../components/MainButton/MainButton';
 import SwiperImage from '../../components/SwiperImage/SwiperImage';
+import useVoteMutation from '../../hooks/useVoteMutation';
 
 const Profile = () => {
   const userId = localStorage.getItem('loginId') || '';
@@ -12,19 +13,7 @@ const Profile = () => {
   const id = params.id ? Number(params.id) : undefined; // 숫자로 변환
   const [localVoted, setLocalVoted] = useState<boolean>(false);
 
-  // useMutation 설정
-  const mutation = useMutation({
-    mutationFn: (variables: { id: number; userId: string }) => vote(variables.id, variables.userId),
-    onSuccess: () => {
-      setLocalVoted((prev) => !prev); // 상태 반전
-    },
-    onError: (error: any) => {
-      console.error('Vote failed:', error);
-      alert('Failed to submit your vote. Please try again.');
-    },
-  });
-
-  // 버튼 클릭 핸들러
+  // 후보자에게 투표
   const handleVoteClick = () => {
     if (id === undefined) {
       alert('Candidate ID is required.');
@@ -33,6 +22,8 @@ const Profile = () => {
 
     mutation.mutate({ id, userId }); // mutation 실행
   };
+
+  const mutation = useVoteMutation({ setLocalVoted });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['candidateInfo', id],
