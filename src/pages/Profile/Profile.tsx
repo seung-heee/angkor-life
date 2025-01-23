@@ -1,17 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { candidateInfo } from '../../api';
 import styles from './Profile.module.scss';
 import MainButton from '../../components/MainButton/MainButton';
 import SwiperImage from '../../components/SwiperImage/SwiperImage';
 import useVoteMutation from '../../hooks/useVoteMutation';
+import { useCandidateInfo } from '../../hooks/useCandidateInfo';
 
 const Profile = () => {
-  const userId = localStorage.getItem('loginId') || '';
   const params = useParams();
   const id = params.id ? Number(params.id) : undefined; // 숫자로 변환
+  const userId = localStorage.getItem('loginId') || '';
   const [localVoted, setLocalVoted] = useState<boolean>(false);
+
+  // 후보자 상세정보 조회
+  const { data, isLoading, error } = useCandidateInfo(id, userId);
 
   // 후보자에게 투표
   const handleVoteClick = () => {
@@ -19,31 +21,20 @@ const Profile = () => {
       alert('Candidate ID is required.');
       return;
     }
-
-    mutation.mutate({ id, userId }); // mutation 실행
+    mutation.mutate({ id, userId });
   };
 
   const mutation = useVoteMutation({ setLocalVoted });
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['candidateInfo', id],
-    queryFn: () => candidateInfo(id as number, userId), // `userId`를 추가로 전달
-    enabled: !!id && !!userId, // `id`와 `userId`가 유효한 경우만 실행
-  });
-
-  // data가 변경될 때 localVoted 초기화
+  // data 변경 시 로컬 상태 초기화
   useEffect(() => {
-    if (data?.voted !== undefined) {
+    if (data?.voted) {
       setLocalVoted(data.voted);
     }
   }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
-
-  if (id === undefined || isNaN(id)) {
-    return <div>Invalid Candidate ID</div>; // 조건부 리턴 전에 useQuery 호출
-  }
 
   return (
     <div className={styles.profile}>
@@ -84,6 +75,7 @@ const Profile = () => {
           </div>
         </article>
       </div>
+
       <div className="copyRight">COPYRIGHT © WUPSC ALL RIGHT RESERVED.</div>
       <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={false} />
     </div>

@@ -47,8 +47,8 @@ const Main = () => {
       {/* mainTitle */}
       <section className={styles.mainTitle}>
         <img src="/assets/images/mainTop.svg" alt="Main Top" />
-        <img className="mainBottom" src="/assets/images/mainBottom.svg" alt="Main Bottom" />
         <Timer targetDate="2025-02-03T00:00:00" />
+        <img className="mainBottom" src="/assets/images/mainBottom.svg" alt="Main Bottom" />
       </section>
 
       {/* votingInfo */}
@@ -85,6 +85,7 @@ const Main = () => {
           ))}
         </div>
       </section>
+
       <div className="copyRight">COPYRIGHT © WUPSC ALL RIGHT RESERVED.</div>
       <Modal isOpen={isModalOpen} onConfirm={handleConfirmModal} confirmText="Confirm" />
     </div>

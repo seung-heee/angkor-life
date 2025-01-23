@@ -16,15 +16,10 @@ interface CandidateProps {
 }
 
 const Candidate = ({ candidate, voted }: CandidateProps) => {
-  const userId = localStorage.getItem('loginId') || '';
   const navigate = useNavigate();
+  const userId = localStorage.getItem('loginId') || '';
   const [localVoted, setLocalVoted] = useState<boolean>(false);
   const [localVoteCnt, setLocalVoteCnt] = useState<number>(Number(candidate.voteCnt));
-
-  // 후보자 상세페이지로 이동
-  const handleProfile = () => {
-    navigate(`/profile/${candidate.id}`);
-  };
 
   // 후보자에게 투표
   const handleVoteClick = () => {
@@ -46,7 +41,12 @@ const Candidate = ({ candidate, voted }: CandidateProps) => {
 
   return (
     <div className={styles.candidate}>
-      <button onClick={handleProfile} className={styles.candidateBox}>
+      <button
+        onClick={() => {
+          navigate(`/profile/${candidate.id}`);
+        }}
+        className={styles.candidateBox}
+      >
         <div className={styles.candidateImage}>
           <img src={candidate.profileUrl} alt={`${candidate.name}`} />
         </div>

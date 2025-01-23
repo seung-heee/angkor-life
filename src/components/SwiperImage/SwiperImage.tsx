@@ -4,7 +4,6 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-// Props 타입 정의
 interface SwiperImageProps {
   profileInfoList: {
     profileUrl: string;
