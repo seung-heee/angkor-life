@@ -1,9 +1,8 @@
-import React from 'react';
+import styles from './SwiperImage.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import styles from './SwiperImage.module.scss';
 
 // Props 타입 정의
 interface SwiperImageProps {
@@ -16,10 +15,14 @@ interface SwiperImageProps {
 const SwiperImage = ({ profileInfoList, name }: SwiperImageProps) => {
   return (
     <Swiper
+      autoplay={{
+        delay: 3000,
+        disableOnInteraction: false,
+      }}
       pagination={{
         clickable: true,
       }}
-      modules={[Pagination]}
+      modules={[Pagination, Autoplay]}
       className={styles.swiperImg}
     >
       {profileInfoList.map((profile, index) => (

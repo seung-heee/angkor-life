@@ -2,13 +2,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { candidateInfo, vote } from '../../api';
-
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
 import styles from './Profile.module.scss';
 import MainButton from '../../components/MainButton/MainButton';
 import SwiperImage from '../../components/SwiperImage/SwiperImage';

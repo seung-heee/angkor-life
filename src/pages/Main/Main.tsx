@@ -4,8 +4,9 @@ import Timer from '../../components/Timer/Timer';
 import VotingTable from '../../components/VotingTable/VotingTable';
 import styles from './Main.module.scss';
 import { candidateList, candidateVotedList } from '../../api';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../../components/Modal/Modal';
 
 interface CandidateData {
   candidateNumber: number;
@@ -16,6 +17,21 @@ interface CandidateData {
 }
 
 const Main = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmModal = () => {
+    setIsModalOpen(false);
+    navigate('/');
+  };
+
   const navigate = useNavigate();
   const userId = localStorage.getItem('loginId') || ''; // 로컬 스토리지에서 userId 가져오기
 
@@ -46,8 +62,7 @@ const Main = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (Array.isArray(votedCandidatesData) && votedCandidatesData.length >= 3) {
-        alert('투표는 최대 3명까지만 가능합니다.');
-        navigate('/');
+        handleOpenModal();
       }
     }, 500); // 0.5초 지연
 
@@ -57,10 +72,6 @@ const Main = () => {
   if (isCandidatesLoading || isVotedCandidatesLoading) return <div>Loading...</div>;
   if (candidatesError) return <div>Error: {candidatesError.message}</div>;
   if (votedCandidatesError) return <div>Error: {votedCandidatesError.message}</div>;
-
-  console.log('All Candidates:', candidatesData);
-  console.log('Voted Candidate IDs:', votedCandidatesData);
-  console.log('max', votedCandidatesData?.length);
 
   return (
     <div>
@@ -108,6 +119,10 @@ const Main = () => {
         </div>
       </section>
       <div className="copyRight">COPYRIGHT © WUPSC ALL RIGHT RESERVED.</div>
+
+      <Modal isOpen={isModalOpen} onConfirm={handleConfirmModal} confirmText="Confirm">
+        모달 내용 넣기
+      </Modal>
     </div>
   );
 };

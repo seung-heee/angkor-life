@@ -33,7 +33,6 @@ const Candidate = ({ candidate, voted }: CandidateProps) => {
     }
 
     mutation.mutate({ id: candidate.id, userId }); // mutation 실행
-    console.log(userId, candidate.id, voted);
   };
 
   // useMutation 설정
@@ -57,13 +56,15 @@ const Candidate = ({ candidate, voted }: CandidateProps) => {
 
   return (
     <div className={styles.candidate}>
-      <button onClick={handleProfile} className={styles.candidateImage}>
-        <img src={candidate.profileUrl} alt={`${candidate.name}`} />
+      <button onClick={handleProfile} className={styles.candidateBox}>
+        <div className={styles.candidateImage}>
+          <img src={candidate.profileUrl} alt={`${candidate.name}`} />
+        </div>
+        <div className={styles.candidateInfo}>
+          <span className={styles.name}>{candidate.name}</span>
+          <span className={styles.voted}>{candidate.voteCnt} votes</span>
+        </div>
       </button>
-      <div className={styles.candidateInfo}>
-        <span className={styles.name}>{candidate.name}</span>
-        <span className={styles.voted}>{candidate.voteCnt} votes</span>
-      </div>
       <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={true} />
     </div>
   );

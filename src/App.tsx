@@ -6,6 +6,7 @@ import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
 
 function App() {
+  //TODO 전체 폰트 확인
   return (
     <Router>
       <Routes>

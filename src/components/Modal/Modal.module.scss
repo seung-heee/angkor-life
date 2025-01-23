@@ -1,0 +1,43 @@
+.modalBack {
+  position: fixed;
+  inset: 0;
+  min-width: 375px;
+  max-width: 500px;
+  margin: 0 auto;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7); // 반투명 배경
+  z-index: 50; // 모달의 우선순위를 높이기 위해
+  display: flex;
+  align-items: center; // 수직 중앙 정렬
+  justify-content: center; // 수평 중앙 정렬
+}
+
+.modalBox {
+  color: black;
+  background-color: white;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 8px;
+  text-align: center;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-bottom: 1px solid rgba(229, 229, 234, 1);
+
+    span:first-child {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+  }
+
+  .confirmBtn {
+    cursor: pointer;
+    color: rgba(66, 50, 213, 1);
+    padding: 13px;
+    border: none;
+    background-color: white;
+  }
+}
