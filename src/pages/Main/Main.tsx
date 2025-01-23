@@ -23,10 +23,6 @@ const Main = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   const handleConfirmModal = () => {
     setIsModalOpen(false);
     navigate('/');
@@ -81,6 +77,7 @@ const Main = () => {
         <img className="mainBottom" src="/assets/images/mainBottom.svg" alt="Main Bottom" />
         <Timer targetDate="2025-02-03T00:00:00" />
       </section>
+
       {/* votingInfo */}
       <section className={styles.votingInfo}>
         <header>
@@ -97,6 +94,7 @@ const Main = () => {
         </header>
         <VotingTable />
       </section>
+
       {/* listUp */}
       <section className={styles.listUp}>
         <header>
@@ -119,10 +117,7 @@ const Main = () => {
         </div>
       </section>
       <div className="copyRight">COPYRIGHT © WUPSC ALL RIGHT RESERVED.</div>
-
-      <Modal isOpen={isModalOpen} onConfirm={handleConfirmModal} confirmText="Confirm">
-        모달 내용 넣기
-      </Modal>
+      <Modal isOpen={isModalOpen} onConfirm={handleConfirmModal} confirmText="Confirm" />
     </div>
   );
 };
