@@ -3,7 +3,6 @@ import Timer from '../../components/Timer/Timer';
 import VotingTable from '../../components/VotingTable/VotingTable';
 import styles from './Main.module.scss';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
 import { useCandidateList } from '../../hooks/useCandidateList';
 import { useVotedCandidatesList } from '../../hooks/useVotedCandidatesList';
@@ -19,13 +18,12 @@ interface CandidateData {
 }
 
 const Main = () => {
-  const navigate = useNavigate();
   const userId = localStorage.getItem('loginId') || '';
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const handleConfirmModal = () => {
     setIsModalOpen(false);
-    navigate('/');
   };
 
   // 후보자 리스트 조회
@@ -37,7 +35,7 @@ const Main = () => {
   // 3명 이상의 후보자에게 투표했을 경우 모달창
   useEffect(() => {
     if (votedCandidatesData?.length >= 3) {
-      setIsModalOpen(true);
+      setIsCompleted(true);
     }
   }, [votedCandidatesData]);
 
@@ -88,7 +86,13 @@ const Main = () => {
 
         <div className={styles.candidateBox}>
           {candidatesData?.content.map((candidate: CandidateData) => (
-            <Candidate key={candidate.id} candidate={candidate} voted={votedCandidatesData?.includes(candidate.id)} />
+            <Candidate
+              setIsModalOpen={setIsModalOpen}
+              key={candidate.id}
+              candidate={candidate}
+              voted={votedCandidatesData?.includes(candidate.id)}
+              isCompleted={isCompleted}
+            />
           ))}
         </div>
       </section>

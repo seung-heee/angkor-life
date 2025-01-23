@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './Candidate.module.scss';
 import MainButton from '../MainButton/MainButton';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import useVoteMutation from '../../hooks/useVoteMutation';
 
 interface CandidateProps {
@@ -13,13 +13,15 @@ interface CandidateProps {
     voteCnt: number;
   };
   voted?: boolean;
+  isCompleted?: boolean;
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const Candidate = ({ candidate, voted }: CandidateProps) => {
+const Candidate = ({ candidate, voted, isCompleted, setIsModalOpen }: CandidateProps) => {
   const navigate = useNavigate();
   const userId = localStorage.getItem('loginId') || '';
-  const [localVoted, setLocalVoted] = useState<boolean>(false);
-  const [localVoteCnt, setLocalVoteCnt] = useState<number>(Number(candidate.voteCnt));
+  const [localVoted, setLocalVoted] = useState<boolean>(false); // 로컬 투표 여부
+  const [localVoteCnt, setLocalVoteCnt] = useState<number>(Number(candidate.voteCnt)); // 로컬 투표 수
 
   // 후보자에게 투표
   const handleVoteClick = () => {
@@ -30,7 +32,7 @@ const Candidate = ({ candidate, voted }: CandidateProps) => {
     mutation.mutate({ id: candidate.id, userId });
   };
 
-  const mutation = useVoteMutation({ setLocalVoteCnt, setLocalVoted });
+  const mutation = useVoteMutation({ setLocalVoteCnt, setLocalVoted, setIsModalOpen });
 
   // 초기 투표 상태 업데이트
   useEffect(() => {
@@ -43,7 +45,7 @@ const Candidate = ({ candidate, voted }: CandidateProps) => {
     <div className={styles.candidate}>
       <button
         onClick={() => {
-          navigate(`/profile/${candidate.id}`);
+          navigate(`/profile/${candidate.id}`, { state: { isCompleted } });
         }}
         className={styles.candidateBox}
       >
@@ -55,7 +57,7 @@ const Candidate = ({ candidate, voted }: CandidateProps) => {
           <span className={styles.voted}>{localVoteCnt} voted</span>
         </div>
       </button>
-      <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={true} />
+      <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={true} isCompleted={isCompleted} />
     </div>
   );
 };

@@ -9,9 +9,10 @@ interface VoteVariables {
 interface MutationOptions {
   setLocalVoteCnt?: (value: (prev: number) => number) => void;
   setLocalVoted?: (value: (prev: boolean) => boolean) => void;
+  setIsModalOpen?: (value: (prev: boolean) => boolean) => void;
 }
 
-const useVoteMutation = ({ setLocalVoteCnt, setLocalVoted }: MutationOptions = {}) => {
+const useVoteMutation = ({ setLocalVoteCnt, setLocalVoted, setIsModalOpen }: MutationOptions = {}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -25,6 +26,10 @@ const useVoteMutation = ({ setLocalVoteCnt, setLocalVoted }: MutationOptions = {
       // 캐시 무효화로 서버와 동기화
       queryClient.invalidateQueries({ queryKey: ['candidateList'] });
       queryClient.invalidateQueries({ queryKey: ['candidateVotedList'] });
+
+      if (setIsModalOpen) {
+        setIsModalOpen(() => true); // setIsModalOpen이 있을 경우에만 호출
+      }
     },
     onError: (error) => {
       console.error('Vote failed:', error);

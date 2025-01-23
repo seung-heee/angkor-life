@@ -33,12 +33,15 @@
   }
 
   .notVoted {
-    cursor: pointer;
     background-color: $primary-color;
     color: $text-color;
   }
 
   .mainPadding {
     padding: 0.4rem;
+  }
+
+  .cursor {
+    cursor: pointer;
   }
 }

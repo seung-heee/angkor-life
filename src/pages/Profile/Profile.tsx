@@ -1,17 +1,26 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styles from './Profile.module.scss';
 import MainButton from '../../components/MainButton/MainButton';
 import SwiperImage from '../../components/SwiperImage/SwiperImage';
 import useVoteMutation from '../../hooks/useVoteMutation';
 import { useCandidateInfo } from '../../hooks/useCandidateInfo';
 import { BeatLoader } from 'react-spinners';
+import Modal from '../../components/Modal/Modal';
 
 const Profile = () => {
+  const location = useLocation();
+  const { isCompleted } = location.state || {};
+
   const params = useParams();
   const id = params.id ? Number(params.id) : undefined;
   const userId = localStorage.getItem('loginId') || '';
   const [localVoted, setLocalVoted] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleConfirmModal = () => {
+    setIsModalOpen(false);
+  };
 
   // 후보자 상세정보 조회
   const { data, isLoading, error } = useCandidateInfo(id, userId);
@@ -25,7 +34,7 @@ const Profile = () => {
     mutation.mutate({ id, userId });
   };
 
-  const mutation = useVoteMutation({ setLocalVoted });
+  const mutation = useVoteMutation({ setLocalVoted, setIsModalOpen });
 
   // data 변경 시 로컬 상태 초기화
   useEffect(() => {
@@ -83,7 +92,8 @@ const Profile = () => {
       </div>
 
       <div className="copyRight">COPYRIGHT © WUPSC ALL RIGHT RESERVED.</div>
-      <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={false} />
+      <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={false} isCompleted={isCompleted} />
+      <Modal isOpen={isModalOpen} onConfirm={handleConfirmModal} confirmText="Confirm" />
     </div>
   );
 };
