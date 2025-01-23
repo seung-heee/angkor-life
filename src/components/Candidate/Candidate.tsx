@@ -50,9 +50,9 @@ const Candidate = ({ candidate, voted }: CandidateProps) => {
         <div className={styles.candidateImage}>
           <img src={candidate.profileUrl} alt={`${candidate.name}`} />
         </div>
-        <div className={styles.candidateInfo}>
+        <div className={`${styles.candidateInfo}`}>
           <span className={styles.name}>{candidate.name}</span>
-          <span className={styles.voted}>{localVoteCnt} votes</span>
+          <span className={styles.voted}>{localVoteCnt} voted</span>
         </div>
       </button>
       <MainButton text="Vote" onClick={handleVoteClick} voted={localVoted} main={true} />

@@ -2,7 +2,7 @@
 @import './variables.scss';
 
 #root {
-  font-family: $font-primary;
+  font-family: 'kantumruy-pro-regular';
   font-weight: 400;
   min-width: 375px;
   max-width: 500px;
@@ -34,7 +34,6 @@ body {
   padding: 40px;
   text-align: center;
   font-size: 10px;
-  //TODO 폰트 변경 필요
 }
 
 .swiper-pagination-bullet {
@@ -46,4 +45,11 @@ body {
 .swiper-pagination-bullet-active {
   background-color: rgba(66, 50, 213, 1) !important; /* 활성화된 색상 */
   opacity: 1;
+}
+
+.loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

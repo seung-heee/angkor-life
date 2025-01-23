@@ -9,7 +9,7 @@ const VotingTable = () => {
       </div>
       <div className={styles.votingTable}>
         <span className={styles.title}>How to vote</span>
-        <ul className={styles.content}>
+        <ul className={`${styles.content}`}>
           <li>Up to three people can participate in early voting per day. </li>
           <li>Three new voting tickets are issued every day at midnight (00:00), and you can vote anew every day during the early voting period</li>
         </ul>

@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
 import { useCandidateList } from '../../hooks/useCandidateList';
 import { useVotedCandidatesList } from '../../hooks/useVotedCandidatesList';
+import { BeatLoader } from 'react-spinners';
+import '../../styles/fonts.scss';
 
 interface CandidateData {
   candidateNumber: number;
@@ -39,7 +41,12 @@ const Main = () => {
     }
   }, [votedCandidatesData]);
 
-  if (isCandidatesLoading || isVotedCandidatesLoading) return <p>Loading...</p>;
+  if (isCandidatesLoading || isVotedCandidatesLoading)
+    return (
+      <div className="loading">
+        <BeatLoader color="#4232d5" />
+      </div>
+    );
   if (candidatesError || votedCandidatesError) return <p>Error occurred!</p>;
 
   return (
@@ -55,11 +62,11 @@ const Main = () => {
       <section className={styles.votingInfo}>
         <header>
           <div className={styles.subHeader}>WORLD MISS UNIVERSITY</div>
-          <div className={styles.header}>
+          <div className={`kantumruy-pro-bold ${styles.header}`}>
             Mobile Voting
             <br /> Information
           </div>
-          <div className={styles.info}>
+          <div className={`kantumruy-pro-light ${styles.info}`}>
             2024 World Miss University brings <br />
             together future global leaders who embody both
             <br /> beauty and intellect.
@@ -72,7 +79,7 @@ const Main = () => {
       <section className={styles.listUp}>
         <header>
           <div className={styles.subHeader}></div>
-          <div className={styles.header}>
+          <div className={`kantumruy-pro-bold  ${styles.header}`}>
             2024
             <br /> Candidate List
           </div>

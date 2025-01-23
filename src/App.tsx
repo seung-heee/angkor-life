@@ -6,15 +6,16 @@ import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
 
 function App() {
-  //TODO 전체 폰트 확인
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/main" element={<Main />} />
-        <Route path="/profile/:id" element={<Profile />} />
-      </Routes>
-    </Router>
+    <div className="kantumruy-pro-regular">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/main" element={<Main />} />
+          <Route path="/profile/:id" element={<Profile />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

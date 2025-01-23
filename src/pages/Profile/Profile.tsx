@@ -5,10 +5,11 @@ import MainButton from '../../components/MainButton/MainButton';
 import SwiperImage from '../../components/SwiperImage/SwiperImage';
 import useVoteMutation from '../../hooks/useVoteMutation';
 import { useCandidateInfo } from '../../hooks/useCandidateInfo';
+import { BeatLoader } from 'react-spinners';
 
 const Profile = () => {
   const params = useParams();
-  const id = params.id ? Number(params.id) : undefined; // 숫자로 변환
+  const id = params.id ? Number(params.id) : undefined;
   const userId = localStorage.getItem('loginId') || '';
   const [localVoted, setLocalVoted] = useState<boolean>(false);
 
@@ -33,7 +34,12 @@ const Profile = () => {
     }
   }, [data]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="loading">
+        <BeatLoader color="#4232d5" />
+      </div>
+    );
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   return (
